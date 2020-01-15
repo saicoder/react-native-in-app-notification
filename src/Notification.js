@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Animated, StyleSheet, Image } from 'react-native';
+import { Animated, StyleSheet, Image, StatusBar, Platform } from 'react-native';
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper';
 
 import DefaultNotificationBody from './DefaultNotificationBody';
@@ -16,7 +16,11 @@ class Notification extends Component {
   constructor() {
     super();
 
-    this.heightOffset = isIphoneX() ? getStatusBarHeight() : 0;
+    if (Platform.OS === 'ios') {
+      this.heightOffset = isIphoneX() ? getStatusBarHeight() : 0;
+    } else {
+      this.heightOffset = StatusBar.currentHeight || 0;
+    }
 
     this.show = this.show.bind(this);
     this.showNotification = this.showNotification.bind(this);
